@@ -89,9 +89,6 @@
 //   }
 // }
 
-
-
-
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 import 'package:my_app/screens/video_list_screen.dart';
@@ -145,7 +142,8 @@ class HomeScreen extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => VideoListScreen(section: "Sentence Formation"),
+                  builder: (context) =>
+                      VideoListScreen(section: "Sentence Formation"),
                 ),
               );
             },
