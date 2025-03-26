@@ -240,7 +240,7 @@ class _VideoListScreenState extends State<VideoListScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          "${widget.section} Videos",
+          "${widget.section} Module",
           style: GoogleFonts.poppins(),
         ),
       ),
