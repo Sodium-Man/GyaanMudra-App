@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:my_app/screens/home_screen.dart';
+import '../theme/app_theme.dart';
 
 class ProfileSetupScreen extends StatefulWidget {
   const ProfileSetupScreen({super.key});
@@ -20,7 +22,7 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
       context: context,
       initialDate: DateTime(2000),
       firstDate: DateTime(1950),
-      lastDate: DateTime.now(), // Fixed: Added missing parenthesis
+      lastDate: DateTime.now(),
     );
 
     if (picked != null && picked != selectedDate) {
@@ -34,53 +36,103 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Profile Setup")),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
+      appBar: AppBar(
+        title: Text("Complete Your Profile",
+            style: GoogleFonts.poppins(fontWeight: FontWeight.w600)),
+      ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(24),
         child: Form(
           key: _formKey,
           child: Column(
             children: [
-              TextFormField(
-                decoration: const InputDecoration(labelText: "Name"),
-                validator: (value) => value!.isEmpty ? "Enter name" : null,
-                onSaved: (value) => name = value!,
-              ),
-              TextFormField(
-                controller: dobController,
-                decoration: InputDecoration(
-                  labelText: "Date of Birth",
-                  suffixIcon: IconButton(
-                    icon: const Icon(Icons.calendar_today),
-                    onPressed: () => _selectDate(context),
-                  ),
-                ),
-                readOnly: true,
-                validator: (value) => value!.isEmpty ? "Select DOB" : null,
-              ),
-              TextFormField(
-                decoration: const InputDecoration(labelText: "Email"),
-                validator: (value) => value!.contains("@") ? null : "Enter valid email",
-                onSaved: (value) => email = value!,
-              ),
+              _buildAvatarSection(),
+              const SizedBox(height: 30),
+              _buildTextField("Full Name", Icons.person),
               const SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () {
-                  if (_formKey.currentState!.validate()) {
-                    _formKey.currentState!.save();
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => HomeScreen(name: name),
-                      ),
-                    );
-                  }
-                },
-                child: const Text("Next"),
-              ),
+              _buildDateField(context),
+              const SizedBox(height: 20),
+              _buildTextField("Email Address", Icons.email),
+              const SizedBox(height: 40),
+              _buildSubmitButton(),
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _buildAvatarSection() {
+    return Column(
+      children: [
+        CircleAvatar(
+          radius: 50,
+          backgroundColor: AppTheme.primaryColor.withOpacity(0.2),
+          child:
+              Icon(Icons.add_a_photo, size: 35, color: AppTheme.primaryColor),
+        ),
+        const SizedBox(height: 10),
+        Text("Add Profile Photo",
+            style: GoogleFonts.poppins(color: AppTheme.primaryColor)),
+      ],
+    );
+  }
+
+  Widget _buildTextField(String label, IconData icon) {
+    return TextFormField(
+      decoration: InputDecoration(
+        labelText: label,
+        prefixIcon: Icon(icon, color: AppTheme.primaryColor),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: const BorderSide(color: AppTheme.primaryColor),
+        ),
+      ),
+      validator: (value) => value!.isEmpty ? "This field is required" : null,
+      onSaved: (value) {
+        if (label == "Full Name") name = value!;
+        if (label == "Email Address") email = value!;
+      },
+    );
+  }
+
+  Widget _buildDateField(BuildContext context) {
+    return TextFormField(
+      controller: dobController,
+      decoration: InputDecoration(
+        labelText: "Date of Birth",
+        prefixIcon: Icon(Icons.calendar_today, color: AppTheme.primaryColor),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
+      ),
+      readOnly: true,
+      onTap: () => _selectDate(context),
+      validator: (value) => value!.isEmpty ? "Select Date of Birth" : null,
+    );
+  }
+
+  Widget _buildSubmitButton() {
+    return SizedBox(
+      width: double.infinity,
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          padding: const EdgeInsets.symmetric(vertical: 16),
+          backgroundColor: AppTheme.primaryColor,
+        ),
+        onPressed: () {
+          if (_formKey.currentState!.validate()) {
+            _formKey.currentState!.save();
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => HomeScreen(name: name),
+              ),
+            );
+          }
+        },
+        child: Text("Continue",
+            style: GoogleFonts.poppins(color: Colors.white, fontSize: 16)),
       ),
     );
   }
