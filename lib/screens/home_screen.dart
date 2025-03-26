@@ -1,99 +1,10 @@
-// import 'package:flutter/material.dart';
-// import 'package:camera/camera.dart';
-// import 'package:my_app/screens/video_list_screen.dart';
-// import 'package:my_app/screens/camera_screen.dart';
-// import 'package:my_app/widgets/section_card.dart';
-
-// class HomeScreen extends StatelessWidget {
-//   final String name;
-//   HomeScreen({super.key, required this.name});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: Row(
-//           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//           children: [
-//             Image.asset('assets/GyaanMudra.png', width: 50, height: 50),
-//             Text(name, style: TextStyle(fontSize: 18)),
-//           ],
-//         ),
-//       ),
-//       body: Column(
-//         mainAxisAlignment: MainAxisAlignment.center,
-//         children: [
-//           SectionCard(
-//             title: "Alphabets",
-//             onTap: () {
-//               Navigator.push(
-//                 context,
-//                 MaterialPageRoute(
-//                   builder: (context) => VideoListScreen(section: "Alphabets"),
-//                 ),
-//               );
-//             },
-//           ),
-//           SectionCard(
-//             title: "Words",
-//             onTap: () {
-//               Navigator.push(
-//                 context,
-//                 MaterialPageRoute(
-//                   builder: (context) => VideoListScreen(section: "Words"),
-//                 ),
-//               );
-//             },
-//           ),
-//           SectionCard(
-//             title: "Sentence Formation",
-//             onTap: () {
-//               Navigator.push(
-//                 context,
-//                 MaterialPageRoute(
-//                   builder: (context) => VideoListScreen(section: "Sentence Formation"),
-//                 ),
-//               );
-//             },
-//           ),
-//           SectionCard(
-//             title: "Numbers",
-//             onTap: () {
-//               Navigator.push(
-//                 context,
-//                 MaterialPageRoute(
-//                   builder: (context) => VideoListScreen(section: "Numbers"),
-//                 ),
-//               );
-//             },
-//           ),
-//           SizedBox(height: 20),
-//           Divider(thickness: 2),
-//           SizedBox(height: 20),
-//           IconButton(
-//             icon: Icon(Icons.camera_alt, size: 50, color: Colors.blue),
-//             onPressed: () async {
-//               final cameras = await availableCameras();
-//               final firstCamera = cameras.first;
-//               Navigator.push(
-//                 context,
-//                 MaterialPageRoute(
-//                   builder: (context) => CameraScreen(camera: firstCamera),
-//                 ),
-//               );
-//             },
-//           ),
-//         ],
-//       ),
-//     );
-//   }
-// }
-
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 import 'package:my_app/screens/video_list_screen.dart';
 import 'package:my_app/screens/camera_screen.dart';
 import 'package:my_app/widgets/section_card.dart';
+import 'package:google_fonts/google_fonts.dart';
+import '../theme/app_theme.dart';
 
 class HomeScreen extends StatelessWidget {
   final String name;
@@ -104,79 +15,65 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Image.asset('assets/GyaanMudra.png', width: 50, height: 50),
-            Text(name, style: const TextStyle(fontSize: 18)),
+            Image.asset('assets/GyaanMudra.png', width: 40, height: 40),
+            const SizedBox(width: 15),
+            Text(
+              'Welcome, $name',
+              style: GoogleFonts.poppins(
+                  color: Colors.white,
+                  fontSize: 18,
+                  fontWeight: FontWeight.w500),
+            ),
           ],
         ),
-      ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          SectionCard(
-            title: "Alphabets",
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => VideoListScreen(section: "Alphabets"),
-                ),
-              );
-            },
-          ),
-          SectionCard(
-            title: "Words",
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => VideoListScreen(section: "Words"),
-                ),
-              );
-            },
-          ),
-          SectionCard(
-            title: "Sentence Formation",
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) =>
-                      VideoListScreen(section: "Sentence Formation"),
-                ),
-              );
-            },
-          ),
-          SectionCard(
-            title: "Numbers",
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => VideoListScreen(section: "Numbers"),
-                ),
-              );
-            },
-          ),
-          const SizedBox(height: 20),
-          const Divider(thickness: 2),
-          const SizedBox(height: 20),
+        actions: [
           IconButton(
-            icon: const Icon(Icons.camera_alt, size: 50, color: Colors.blue),
-            onPressed: () async {
-              final cameras = await availableCameras();
-              final firstCamera = cameras.first;
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => CameraScreen(camera: firstCamera),
-                ),
-              );
-            },
+            icon: const Icon(Icons.notifications, color: Colors.white),
+            onPressed: () {},
           ),
         ],
       ),
+      body: GridView.count(
+        padding: const EdgeInsets.all(20),
+        crossAxisCount: 2,
+        crossAxisSpacing: 20,
+        mainAxisSpacing: 20,
+        children: [
+          _buildSectionCard(context, "Alphabets", Icons.abc),
+          _buildSectionCard(context, "Words", Icons.text_format),
+          _buildSectionCard(context, "Sentence Formation", Icons.article),
+          _buildSectionCard(context, "Numbers", Icons.numbers),
+        ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: AppTheme.accentColor,
+        child: const Icon(Icons.camera_alt, size: 30),
+        onPressed: () async {
+          final cameras = await availableCameras();
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => CameraScreen(camera: cameras.first),
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _buildSectionCard(BuildContext context, String title, IconData icon) {
+    return SectionCard(
+      title: title,
+      icon: icon,
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => VideoListScreen(section: title),
+          ),
+        );
+      },
     );
   }
 }
