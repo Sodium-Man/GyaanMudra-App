@@ -190,7 +190,8 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:google_fonts/google_fonts.dart'; // Add this import
+import 'package:path/path.dart' as path;
 import 'package:my_app/models/video_model.dart';
 import 'package:my_app/screens/video_player_screen.dart';
 import '../theme/app_theme.dart';
@@ -219,28 +220,55 @@ class _VideoListScreenState extends State<VideoListScreen> {
     return videoList.map((video) => Video.fromJson(video)).toList();
   }
 
+  void _playVideo(BuildContext context, String videoPath) {
+    final fileName = path.basename(videoPath);
+    final videoTitle = fileName.split('.').first;
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => VideoPlayerScreen(
+          videoPath: videoPath,
+          videoTitle: videoTitle,
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("${widget.section} Videos", style: GoogleFonts.poppins()),
+        title: Text(
+          "${widget.section} Videos",
+          style: GoogleFonts.poppins(),
+        ),
       ),
       body: FutureBuilder<List<Video>>(
         future: _videosFuture,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(
-                child: CircularProgressIndicator(color: AppTheme.primaryColor));
+              child: CircularProgressIndicator(
+                color: AppTheme.primaryColor,
+              ),
+            );
           }
           if (snapshot.hasError) {
             return Center(
-                child:
-                    Text("Error loading videos", style: GoogleFonts.poppins()));
+              child: Text(
+                "Error loading videos",
+                style: GoogleFonts.poppins(),
+              ),
+            );
           }
           if (!snapshot.hasData || snapshot.data!.isEmpty) {
             return Center(
-                child:
-                    Text("No videos available", style: GoogleFonts.poppins()));
+              child: Text(
+                "No videos available",
+                style: GoogleFonts.poppins(),
+              ),
+            );
           }
 
           final videos = snapshot.data!;
@@ -249,43 +277,43 @@ class _VideoListScreenState extends State<VideoListScreen> {
             itemCount: videos.length,
             itemBuilder: (context, index) {
               final video = videos[index];
-              return _buildVideoCard(context, video);
+              return Card(
+                margin: const EdgeInsets.only(bottom: 16),
+                elevation: 4,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: ListTile(
+                  leading: Container(
+                    padding: const EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      color: AppTheme.primaryColor.withOpacity(0.2),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Icon(
+                      Icons.play_arrow,
+                      color: AppTheme.primaryColor,
+                    ),
+                  ),
+                  title: Text(
+                    video.name,
+                    style: GoogleFonts.poppins(
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  subtitle: Text(
+                    "Tap to play",
+                    style: GoogleFonts.poppins(
+                      fontSize: 12,
+                      color: Colors.grey[600],
+                    ),
+                  ),
+                  onTap: () => _playVideo(context, video.path),
+                ),
+              );
             },
           );
         },
-      ),
-    );
-  }
-
-  Widget _buildVideoCard(BuildContext context, Video video) {
-    return Card(
-      elevation: 4,
-      margin: const EdgeInsets.only(bottom: 16),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: ListTile(
-        leading: Container(
-          padding: const EdgeInsets.all(8),
-          decoration: BoxDecoration(
-            color: AppTheme.primaryColor.withOpacity(0.2),
-            borderRadius: BorderRadius.circular(8),
-          ),
-          child: Icon(Icons.play_arrow, color: AppTheme.primaryColor),
-        ),
-        title: Text(video.name,
-            style: GoogleFonts.poppins(fontWeight: FontWeight.w500)),
-        subtitle: Text("Tap to play", style: GoogleFonts.poppins(fontSize: 12)),
-        onTap: () => _playVideo(context, video.path),
-      ),
-    );
-  }
-
-  void _playVideo(BuildContext context, String path) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => VideoPlayerScreen(videoPath: path),
       ),
     );
   }

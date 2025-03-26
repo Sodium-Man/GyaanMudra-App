@@ -17,6 +17,11 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
   DateTime? selectedDate;
   final TextEditingController dobController = TextEditingController();
 
+  // Email validation regex pattern
+  final RegExp _emailRegExp = RegExp(
+    r'^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$',
+  );
+
   Future<void> _selectDate(BuildContext context) async {
     DateTime? picked = await showDatePicker(
       context: context,
@@ -52,7 +57,7 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
               const SizedBox(height: 20),
               _buildDateField(context),
               const SizedBox(height: 20),
-              _buildTextField("Email Address", Icons.email),
+              _buildEmailField(),
               const SizedBox(height: 40),
               _buildSubmitButton(),
             ],
@@ -90,9 +95,31 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
       ),
       validator: (value) => value!.isEmpty ? "This field is required" : null,
       onSaved: (value) {
-        if (label == "Full Name") name = value!;
-        if (label == "Email Address") email = value!;
+        if (label == "Full Name") name = value!.trim();
       },
+    );
+  }
+
+  Widget _buildEmailField() {
+    return TextFormField(
+      decoration: InputDecoration(
+        labelText: "Email Address",
+        prefixIcon: Icon(Icons.email, color: AppTheme.primaryColor),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+        ),
+      ),
+      keyboardType: TextInputType.emailAddress,
+      validator: (value) {
+        if (value == null || value.isEmpty) {
+          return 'Please enter an email address';
+        }
+        if (!_emailRegExp.hasMatch(value.trim())) {
+          return 'Please enter a valid email address';
+        }
+        return null;
+      },
+      onSaved: (value) => email = value!.trim(),
     );
   }
 
