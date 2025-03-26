@@ -39,6 +39,9 @@ dependencies:
   chewie: ^1.7.0
   intl: ^0.20.2
   flutter_json: ^0.0.4
+  google_fonts: ^6.1.0       
+  shimmer: ^3.0.0  
+  cached_network_image: ^3.3.0         
 
 dev_dependencies:
   flutter_test:
