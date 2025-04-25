@@ -158,7 +158,7 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
             );
           }
         },
-        child: Text("Continue",
+        child: Text("Sign In",
             style: GoogleFonts.poppins(color: Colors.white, fontSize: 16)),
       ),
     );

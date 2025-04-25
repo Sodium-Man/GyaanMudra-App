@@ -3,10 +3,6 @@ allprojects {
         google()
         mavenCentral()
     }
-
-    dependencies {
-        classpath 'com.google.gms.google-services:4.4.2' 
-    }
 }
 
 rootProject.buildDir = "../build"
@@ -21,31 +17,31 @@ tasks.register("clean", Delete) {
     delete rootProject.buildDir
 }
 
-android/build.gradle
+// android/build.gradle
 
-buildscript {
-    ext.kotlin_version = '1.7.20'                             // or bump to your desired version
-    repositories {
-        google()
-        mavenCentral()
-    }
-    dependencies {
-        classpath 'com.android.tools.build:gradle:8.2.1'      // Android Gradle plugin
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-        classpath 'com.google.gms:google-services:4.4.2'      // <-- correct groupId:artifactId
-    }
-}
+// buildscript {
+//     ext.kotlin_version = '1.7.20'                             // or bump to your desired version
+//     repositories {
+//         google()
+//         mavenCentral()
+//     }
+//     dependencies {
+//         classpath 'com.android.tools.build:gradle:8.2.1'      // Android Gradle plugin
+//         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+//         classpath 'com.google.gms:google-services:4.4.2'      // <-- correct groupId:artifactId
+//     }
+// }
 
-allprojects {
-    repositories {
-        google()
-        mavenCentral()
-    }
-}
+// allprojects {
+//     repositories {
+//         google()
+//         mavenCentral()
+//     }
+// }
 
-tasks.register("clean", Delete) {
-    delete rootProject.layout.buildDirectory
-}
+// tasks.register("clean", Delete) {
+//     delete rootProject.layout.buildDirectory
+// }
 
 
 

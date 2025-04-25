@@ -1,0 +1,2 @@
+C:/Users/admin/GyaanMudra_App/android/app/.cxx/RelWithDebInfo/3y4u3f6m/armeabi-v7a/CMakeFiles/edit_cache.dir
+C:/Users/admin/GyaanMudra_App/android/app/.cxx/RelWithDebInfo/3y4u3f6m/armeabi-v7a/CMakeFiles/rebuild_cache.dir
