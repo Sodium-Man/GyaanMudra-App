@@ -21,27 +21,31 @@ tasks.register("clean", Delete) {
     delete rootProject.buildDir
 }
 
-// buildscript {
-//     ext.kotlin_version = '1.7.20'
-//     repositories {
-//         google()
-//         mavenCentral()
-//     }
+android/build.gradle
 
-//     dependencies {
-//         classpath 'com.android.tools.build:gradle:8.2.1'
-//         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-//         classpath 'com.google.gms:google-services:4.3.15'
-//     }
-// }
+buildscript {
+    ext.kotlin_version = '1.7.20'                             // or bump to your desired version
+    repositories {
+        google()
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:8.2.1'      // Android Gradle plugin
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath 'com.google.gms:google-services:4.4.2'      // <-- correct groupId:artifactId
+    }
+}
 
-// allprojects {
-//     repositories {
-//         google()
-//         mavenCentral()
-//     }
-// }
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
 
-// task clean(type: Delete) {
-//     delete rootProject.buildDir
-// }
+tasks.register("clean", Delete) {
+    delete rootProject.layout.buildDirectory
+}
+
+
+

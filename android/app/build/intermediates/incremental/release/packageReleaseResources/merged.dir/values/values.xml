@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="gcm_defaultSenderId" translatable="false">943843709775</string>
+    <string name="google_api_key" translatable="false">AIzaSyBpEZenxFSwDnidoK0yWpZF6Ca9sAimi1U</string>
+    <string name="google_app_id" translatable="false">1:943843709775:android:02f7696d1166971449eb3a</string>
+    <string name="google_crash_reporting_api_key" translatable="false">AIzaSyBpEZenxFSwDnidoK0yWpZF6Ca9sAimi1U</string>
+    <string name="google_storage_bucket" translatable="false">gyaanmudra-app.firebasestorage.app</string>
+    <string name="project_id" translatable="false">gyaanmudra-app</string>
+    <style name="LaunchTheme" parent="@android:style/Theme.Light.NoTitleBar">
+        
+        <item name="android:windowBackground">@drawable/launch_background</item>
+    </style>
+    <style name="NormalTheme" parent="@android:style/Theme.Light.NoTitleBar">
+        <item name="android:windowBackground">?android:colorBackground</item>
+    </style>
+</resources>
